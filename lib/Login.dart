@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:form_field_validator/form_field_validator.dart';
-
+import 'sign-up.dart';
 import 'HomePage.dart';
 
 class LoginFormValidation extends StatefulWidget {
@@ -27,17 +27,17 @@ class _LoginFormValidationState extends State<LoginFormValidation> {
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
-        title: Text("Login"),
+        title: Text("Gallery App"),
+        backgroundColor: Color(0xFF29292B),
       ),
       body: SingleChildScrollView(
-
         child: Form(
           //check for validation while typing
           key: formkey,
           child: Column(
             children: <Widget>[
               Padding(
-                padding: const EdgeInsets.only(top: 60.0),
+                padding: const EdgeInsets.all(50.0),
                 child: Center(
                   child: Container(
                       width: 200,
@@ -83,20 +83,20 @@ class _LoginFormValidationState extends State<LoginFormValidation> {
                 },
                 child: Text(
                   'Forgot Password',
-                  style: TextStyle(color: Colors.blue, fontSize: 15),
+                  style: TextStyle(color: Colors.grey, fontSize: 15),
                 ),
               ),
               Container(
                 height: 50,
                 width: 250,
                 decoration: BoxDecoration(
-                    color: Colors.blue,
+                    color: Colors.black,
                     borderRadius: BorderRadius.circular(20)),
                 child: FlatButton(
                   onPressed: () {
                     if (formkey.currentState!.validate()) {
-                      Navigator.push(context,
-                          MaterialPageRoute(builder: (_) => HomePage()));
+                      Navigator.pushAndRemoveUntil(context,
+                          MaterialPageRoute(builder: (_) => HomePage(),), (route) => false);
                       print("Validated");
                     } else {
                       print("Not Validated");
@@ -108,6 +108,23 @@ class _LoginFormValidationState extends State<LoginFormValidation> {
                   ),
                 ),
               ),
+              Container(
+                height: 50,
+                width: 250,
+                decoration: BoxDecoration(
+                  color: Colors.black,
+                  borderRadius: BorderRadius.circular(20)),
+                margin: EdgeInsets.all(10),
+                child: FlatButton(
+                    onPressed: (){
+                      Navigator.push(context, MaterialPageRoute(builder: (context) => SignUp()));
+                    },
+                    child: Text(
+                      "Sign-Up",style: TextStyle(color: Colors.white,fontSize: 20),
+                      
+                    )
+                ),
+                ),
               SizedBox(
                 height: 100,
               ),
