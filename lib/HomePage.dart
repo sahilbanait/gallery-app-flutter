@@ -110,8 +110,7 @@ class _MyGridScreenState extends State<CenterContainer> {
             children: List.generate(200, (index)  {
               return Container(
                 padding:  EdgeInsets.all(8),
-
-                color: Colors.blue,
+                color: Colors.grey,
                 child: Stack(
                   children: <Widget>[
                     Positioned(child: myPopMenu(),right: 0,),Positioned(child: likePopupMenu(), bottom: 0, right: 0,)
@@ -165,8 +164,8 @@ Widget myPopMenu() {
             )),
       ]);
 }
-Widget likePopupMenu(){
 
+Widget likePopupMenu(){
   return  IconButton(onPressed: () { },
       icon: Icon(Icons.favorite_border_outlined),color: Color(0xFF6200EE) ,
   );

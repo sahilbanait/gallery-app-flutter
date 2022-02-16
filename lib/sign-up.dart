@@ -1,4 +1,4 @@
-import 'package:first_app/HomePage.dart';
+import 'package:Gallery/HomePage.dart';
 import 'package:flutter/material.dart';
 
 class SignUp extends StatefulWidget {
@@ -7,18 +7,7 @@ class SignUp extends StatefulWidget {
 }
 
 class _SignUpPageState extends State<SignUp> {
-  GlobalKey<FormState> formkey = GlobalKey<FormState>();
 
-  String? validatePassword(String value) {
-    if (value.isEmpty) {
-      return "* Required";
-    } else if (value.length < 6) {
-      return "Password should be at least 6 characters";
-    } else if (value.length > 15) {
-      return "Password should not be greater than 15 characters";
-    } else
-      return null;
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -31,7 +20,7 @@ class _SignUpPageState extends State<SignUp> {
         ),
         body: SingleChildScrollView(
           child: Form(
-            key: formkey,
+
             child: Column(
               children: <Widget>[
                 Padding(
@@ -97,21 +86,22 @@ class _SignUpPageState extends State<SignUp> {
                   height: 50,
                   width: 250,
                   decoration: BoxDecoration(
-                    color: Colors.black,
+                      color: Colors.black,
                       borderRadius: BorderRadius.circular(20)),
                   margin: EdgeInsets.only(top: 30),
-                      child: FlatButton(
-                        onPressed: () {
-                          if(formkey.currentState!.validate()){
-                            Navigator.push(context, MaterialPageRoute(builder: (context) => HomePage()));
-                          }else{
-                            print('Bad signup details');
-                          }
-                        },
-                        child: Text('Submit',style: TextStyle(color: Colors.white,fontSize: 20),)
-                      ),
-                    ),
+                  child: FlatButton(
+                      onPressed: () {
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => HomePage()));
 
+                      },
+                      child: Text(
+                        'Submit',
+                        style: TextStyle(color: Colors.white, fontSize: 20),
+                      )),
+                ),
               ],
             ),
           ),
