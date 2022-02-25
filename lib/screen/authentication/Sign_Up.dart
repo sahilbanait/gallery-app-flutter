@@ -7,8 +7,6 @@ class SignUp extends StatefulWidget {
 }
 
 class _SignUpPageState extends State<SignUp> {
-
-
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -20,7 +18,6 @@ class _SignUpPageState extends State<SignUp> {
         ),
         body: SingleChildScrollView(
           child: Form(
-
             child: Column(
               children: <Widget>[
                 Padding(
@@ -91,11 +88,12 @@ class _SignUpPageState extends State<SignUp> {
                   margin: EdgeInsets.only(top: 30),
                   child: FlatButton(
                       onPressed: () {
-                          Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (context) => HomePage()));
-
+                        Navigator.pushAndRemoveUntil(
+                            context,
+                            MaterialPageRoute(
+                              builder: (_) => HomePage(),
+                            ),
+                            (route) => false);
                       },
                       child: Text(
                         'Submit',

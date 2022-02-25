@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:form_field_validator/form_field_validator.dart';
-import 'sign-up.dart';
+import 'Sign_Up.dart';
 import '../homepage/HomePage.dart';
 
 class LoginFormValidation extends StatefulWidget {
@@ -69,13 +69,14 @@ class _LoginFormValidationState extends State<LoginFormValidation> {
                     validator: MultiValidator([
                       RequiredValidator(errorText: "* Required"),
                       MinLengthValidator(6,
-                          errorText: "Password should be at least 6 characters"),
+                          errorText:
+                              "Password should be at least 6 characters"),
                       MaxLengthValidator(15,
                           errorText:
-                          "Password should not be greater than 15 characters")
+                              "Password should not be greater than 15 characters")
                     ])
-                  //validatePassword,        //Function to check validation
-                ),
+                    //validatePassword,        //Function to check validation
+                    ),
               ),
               FlatButton(
                 onPressed: () {
@@ -95,8 +96,12 @@ class _LoginFormValidationState extends State<LoginFormValidation> {
                 child: FlatButton(
                   onPressed: () {
                     if (formkey.currentState!.validate()) {
-                      Navigator.pushAndRemoveUntil(context,
-                          MaterialPageRoute(builder: (_) => HomePage(),), (route) => false);
+                      Navigator.pushAndRemoveUntil(
+                          context,
+                          MaterialPageRoute(
+                            builder: (_) => HomePage(),
+                          ),
+                          (route) => false);
                       print("Validated");
                     } else {
                       print("Not Validated");
@@ -112,24 +117,23 @@ class _LoginFormValidationState extends State<LoginFormValidation> {
                 height: 50,
                 width: 250,
                 decoration: BoxDecoration(
-                  color: Colors.black,
-                  borderRadius: BorderRadius.circular(20)),
+                    color: Colors.black,
+                    borderRadius: BorderRadius.circular(20)),
                 margin: EdgeInsets.all(10),
                 child: FlatButton(
-                    onPressed: (){
-                      Navigator.push(context, MaterialPageRoute(builder: (context) => SignUp()));
+                    onPressed: () {
+                      Navigator.push(context,
+                          MaterialPageRoute(builder: (context) => SignUp()));
                     },
                     child: Text(
-                      "Sign-Up",style: TextStyle(color: Colors.white,fontSize: 20),
-                      
-                    )
-                ),
-                ),
+                      "Sign-Up",
+                      style: TextStyle(color: Colors.white, fontSize: 20),
+                    )),
+              ),
               SizedBox(
                 height: 100,
               ),
             ],
-
           ),
         ),
       ),

@@ -1,4 +1,4 @@
-
+import 'dart:ui';
 
 import 'package:flutter/material.dart';
 
@@ -25,7 +25,6 @@ class _HomePageState extends State<HomePage> {
         child: Icon(Icons.add_a_photo_outlined), //icon inside button
       ),
 
-
       //floating action button position to center
 
       bottomNavigationBar: BottomAppBar(
@@ -40,26 +39,26 @@ class _HomePageState extends State<HomePage> {
           backgroundColor: Theme.of(context).primaryColor.withAlpha(0),
           elevation: 0,
           showSelectedLabels: true,
-          selectedItemColor:Color(0xFF6200EE),
+          selectedItemColor: Color(0xFF6200EE),
           unselectedItemColor: Colors.white,
           selectedFontSize: 16.0,
           selectedLabelStyle: TextStyle(fontWeight: FontWeight.bold),
-          unselectedLabelStyle:TextStyle(fontWeight: FontWeight.bold),
-
+          unselectedLabelStyle: TextStyle(fontWeight: FontWeight.bold),
           items: [
             BottomNavigationBarItem(
               title: Text('HOME'),
               icon: Icon(Icons.home_outlined),
             ),
-
             BottomNavigationBarItem(
-                title: Text('SHARED'), icon: Icon(Icons.supervisor_account_outlined))
+                title: Text('SHARED'),
+                icon: Icon(Icons.supervisor_account_outlined))
           ],
         ),
       ),
     );
   }
 }
+
 class ApplicationToolbar extends StatelessWidget with PreferredSizeWidget {
   @override
   Widget build(BuildContext context) {
@@ -73,6 +72,7 @@ class ApplicationToolbar extends StatelessWidget with PreferredSizeWidget {
       ],
     );
   }
+
   @override
   Size get preferredSize => const Size.fromHeight(60);
 }
@@ -85,15 +85,14 @@ class CenterContainer extends StatefulWidget {
     return SafeArea(
         child: Center(
             child: Container(
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-              ),
-            )));
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+      ),
+    )));
   }
 
   @override
   _MyGridScreenState createState() => _MyGridScreenState();
-
 }
 
 class _MyGridScreenState extends State<CenterContainer> {
@@ -102,71 +101,81 @@ class _MyGridScreenState extends State<CenterContainer> {
     return Scaffold(
       body: Center(
           child: GridView.count(
-            primary: false,
-            padding: const EdgeInsets.all(16),
-            crossAxisSpacing: 10,
-            mainAxisSpacing: 10,
-            crossAxisCount: 2,
-            children: List.generate(200, (index)  {
-              return Container(
-                padding:  EdgeInsets.all(8),
-                color: Colors.grey,
-                child: Stack(
-                  children: <Widget>[
-                    Positioned(child: myPopMenu(),right: 0,),Positioned(child: likePopupMenu(), bottom: 0, right: 0,)
-                  ],
+        primary: false,
+        padding: const EdgeInsets.all(16),
+        crossAxisSpacing: 10,
+        mainAxisSpacing: 10,
+        crossAxisCount: 2,
+        children: List.generate(1000, (index) {
+          return Container(
+            padding: EdgeInsets.all(8),
+            color: Colors.grey,
+            child: Stack(
+              children: <Widget>[
+                Positioned(
+                  child: myPopMenu(),
+                  right: 0,
                 ),
-              );
-            }),
-          )),
+                Positioned(
+                  child: likePopupMenu(),
+                  bottom: 0,
+                  right: 0,
+                )
+              ],
+            ),
+          );
+        }),
+      )),
     );
   }
 }
 
 Widget myPopMenu() {
   return PopupMenuButton(
-    color: Color(0xFF29292B),
+      color: Color(0xFF29292B),
       enabled: true,
-      onSelected: (value) {
-      },
+      onSelected: (value) {},
       itemBuilder: (context) => [
-        PopupMenuItem(
-            value: 1,
-            child: Row(
-              children: <Widget>[
-                Padding(
-                  padding: const EdgeInsets.fromLTRB(2, 2, 8, 2),
-
-                ),
-                Text('Share',style: TextStyle(color: Colors.white),)
-              ],
-            )),
-        PopupMenuItem(
-            value: 2,
-            child: Row(
-              children: <Widget>[
-                Padding(
-                  padding: const EdgeInsets.fromLTRB(2, 2, 8, 2),
-
-                ),
-                Text('Rename',style: TextStyle(color: Colors.white))
-              ],
-            )),
-        PopupMenuItem(
-            value: 3,
-            child: Row(
-              children: <Widget>[
-                Padding(
-                  padding: const EdgeInsets.fromLTRB(2, 2, 8, 2),
-                ),
-                Text('Remove',style: TextStyle(color: Colors.white))
-              ],
-            )),
-      ]);
+            PopupMenuItem(
+                value: 1,
+                child: Row(
+                  children: <Widget>[
+                    Padding(
+                      padding: const EdgeInsets.fromLTRB(2, 2, 8, 2),
+                    ),
+                    Text(
+                      'Share',
+                      style: TextStyle(color: Colors.white),
+                    )
+                  ],
+                )),
+            PopupMenuItem(
+                value: 2,
+                child: Row(
+                  children: <Widget>[
+                    Padding(
+                      padding: const EdgeInsets.fromLTRB(2, 2, 8, 2),
+                    ),
+                    Text('Rename', style: TextStyle(color: Colors.white))
+                  ],
+                )),
+            PopupMenuItem(
+                value: 3,
+                child: Row(
+                  children: <Widget>[
+                    Padding(
+                      padding: const EdgeInsets.fromLTRB(2, 2, 8, 2),
+                    ),
+                    Text('Remove', style: TextStyle(color: Colors.white))
+                  ],
+                )),
+          ]);
 }
 
-Widget likePopupMenu(){
-  return  IconButton(onPressed: () { },
-      icon: Icon(Icons.favorite_border_outlined),color: Color(0xFF6200EE) ,
+Widget likePopupMenu() {
+  return IconButton(
+    onPressed: () {},
+    icon: Icon(Icons.favorite_border_outlined),
+    color: Color(0xFF6200EE),
   );
 }
