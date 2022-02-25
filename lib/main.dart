@@ -1,12 +1,9 @@
-
-
 import 'package:Gallery/screen/homepage/HomePage.dart';
 import 'package:Gallery/screen/authentication/Login.dart';
+import 'package:Gallery/screen/homepage/wrapper.dart';
 import 'package:flutter/material.dart';
 
-void main() =>
-  runApp(GalleryApp());
-
+void main() => runApp(GalleryApp());
 
 class GalleryApp extends StatelessWidget {
   const GalleryApp({Key? key}) : super(key: key);
@@ -15,10 +12,8 @@ class GalleryApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      home: LoginFormValidation(),
+      home: Wrapper(),
       title: "Gallery App",
     );
   }
 }
-
-

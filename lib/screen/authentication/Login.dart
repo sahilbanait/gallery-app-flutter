@@ -1,3 +1,6 @@
+import 'dart:ffi';
+import 'dart:ui';
+
 import 'package:flutter/material.dart';
 import 'package:form_field_validator/form_field_validator.dart';
 import 'Sign_Up.dart';
@@ -25,7 +28,7 @@ class _LoginFormValidationState extends State<LoginFormValidation> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.white,
+      backgroundColor: Colors.white70,
       appBar: AppBar(
         title: Text("Gallery App"),
         backgroundColor: Color(0xFF29292B),
@@ -40,8 +43,10 @@ class _LoginFormValidationState extends State<LoginFormValidation> {
                 padding: const EdgeInsets.all(50.0),
                 child: Center(
                   child: Container(
-                      width: 200,
+                      width: 600,
                       height: 150,
+                      color: Colors.black54,
+                      padding: EdgeInsets.all(10.0),
                       child: Image.asset('asset/images/logo.png')),
                 ),
               ),
@@ -78,20 +83,22 @@ class _LoginFormValidationState extends State<LoginFormValidation> {
                     //validatePassword,        //Function to check validation
                     ),
               ),
+
+              //Forgot Button
               FlatButton(
                 onPressed: () {
                   //TODO FORGOT PASSWORD SCREEN GOES HERE
                 },
                 child: Text(
                   'Forgot Password',
-                  style: TextStyle(color: Colors.grey, fontSize: 15),
+                  style: TextStyle(color: Colors.black38, fontSize: 15),
                 ),
               ),
               Container(
                 height: 50,
                 width: 250,
                 decoration: BoxDecoration(
-                    color: Colors.black,
+                    color: Colors.black87,
                     borderRadius: BorderRadius.circular(20)),
                 child: FlatButton(
                   onPressed: () {
@@ -117,7 +124,7 @@ class _LoginFormValidationState extends State<LoginFormValidation> {
                 height: 50,
                 width: 250,
                 decoration: BoxDecoration(
-                    color: Colors.black,
+                    color: Colors.black87,
                     borderRadius: BorderRadius.circular(20)),
                 margin: EdgeInsets.all(10),
                 child: FlatButton(
