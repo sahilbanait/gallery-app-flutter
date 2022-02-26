@@ -1,8 +1,6 @@
-import 'dart:ffi';
-import 'dart:ui';
-
 import 'package:flutter/material.dart';
 import 'package:form_field_validator/form_field_validator.dart';
+import '../services/auth_screen.dart';
 import 'Sign_Up.dart';
 import '../homepage/HomePage.dart';
 
@@ -12,6 +10,7 @@ class LoginFormValidation extends StatefulWidget {
 }
 
 class _LoginFormValidationState extends State<LoginFormValidation> {
+  final AuthService _authService = AuthService();
   GlobalKey<FormState> formkey = GlobalKey<FormState>();
 
   String? validatePassword(String value) {
@@ -28,7 +27,7 @@ class _LoginFormValidationState extends State<LoginFormValidation> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.white70,
+      backgroundColor: Colors.white,
       appBar: AppBar(
         title: Text("Gallery App"),
         backgroundColor: Color(0xFF29292B),
@@ -45,7 +44,7 @@ class _LoginFormValidationState extends State<LoginFormValidation> {
                   child: Container(
                       width: 600,
                       height: 150,
-                      color: Colors.black54,
+                      color: Colors.white,
                       padding: EdgeInsets.all(10.0),
                       child: Image.asset('asset/images/logo.png')),
                 ),

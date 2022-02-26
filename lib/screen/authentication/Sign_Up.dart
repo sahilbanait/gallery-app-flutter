@@ -1,4 +1,4 @@
-import 'package:Gallery/screen/homepage/HomePage.dart';
+import 'package:Gallery_App/screen/homepage/HomePage.dart';
 import 'package:flutter/material.dart';
 
 class SignUp extends StatefulWidget {

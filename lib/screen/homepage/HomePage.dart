@@ -44,12 +44,11 @@ class _HomePageState extends State<HomePage> {
           unselectedLabelStyle: TextStyle(fontWeight: FontWeight.bold),
           items: [
             BottomNavigationBarItem(
-              title: Text('HOME'),
+              label: 'Home',
               icon: Icon(Icons.home_outlined),
             ),
             BottomNavigationBarItem(
-                title: Text('SHARED'),
-                icon: Icon(Icons.supervisor_account_outlined))
+                label: 'SHARED', icon: Icon(Icons.supervisor_account_outlined))
           ],
         ),
       ),
@@ -103,7 +102,7 @@ class _MyGridScreenState extends State<CenterContainer> {
         padding: const EdgeInsets.all(16),
         crossAxisSpacing: 10,
         mainAxisSpacing: 10,
-        crossAxisCount: 2,
+        crossAxisCount: 3,
         children: List.generate(1000, (index) {
           return Container(
             padding: EdgeInsets.all(8),
