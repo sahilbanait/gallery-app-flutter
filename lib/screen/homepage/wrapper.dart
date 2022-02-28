@@ -1,9 +1,7 @@
-import 'package:Gallery_App/screen/authentication/Login.dart';
-import 'package:Gallery_App/screen/homepage/HomePage.dart';
-import 'package:Gallery_App/screen/services/auth_form.dart';
-import 'package:Gallery_App/screen/services/auth_screen.dart';
+
+import 'package:gallery_app/screen/authentication/services/auth_screen.dart';
 import 'package:flutter/material.dart';
-import 'package:Gallery_App/main.dart';
+import 'package:gallery_app/main.dart';
 
 class Wrapper extends StatelessWidget {
   const Wrapper({Key? key}) : super(key: key);

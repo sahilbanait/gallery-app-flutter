@@ -1,4 +1,6 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+
 
 class HomePage extends StatefulWidget {
   @override
@@ -65,7 +67,7 @@ class ApplicationToolbar extends StatelessWidget with PreferredSizeWidget {
       actions: <Widget>[
         IconButton(onPressed: () {}, icon: Icon(Icons.grid_view)),
         IconButton(onPressed: () {}, icon: Icon(Icons.sort)),
-        IconButton(onPressed: () {}, icon: Icon(Icons.lock_outline)),
+        IconButton(onPressed: () {FirebaseAuth.instance.signOut();},icon: Icon(Icons.lock_outline)),
       ],
     );
   }
