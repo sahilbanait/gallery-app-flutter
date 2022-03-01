@@ -1,9 +1,11 @@
 import 'dart:io';
-
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_paginator/enums.dart';
+import 'package:flutter_paginator/flutter_paginator.dart';
+import 'package:gallery_app/screen/widget/image_picker.dart';
+import 'package:gallery_app/screen/widget/list_screen.dart';
 import 'package:image_picker/image_picker.dart';
-
 
 class HomePage extends StatefulWidget {
   @override
@@ -11,21 +13,25 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-   var _storeImage;
+  var _storeImage;
+
   //Method to pick the image via camera
   Future<void> takePicture() async {
-    final imageFile = await ImagePicker.platform.pickImage(source: ImageSource.camera,);
+    final picker = ImagePicker();
+    final pickedImage = await picker.getImage(source: ImageSource.gallery);
+    final pickedImageFile = File(pickedImage!.path);
     setState(() {
-      _storeImage = imageFile as File;
+      _storeImage = pickedImageFile;
     });
   }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.grey,
       appBar: ApplicationToolbar(),
       extendBody: true,
-      body: CenterContainer(),
+      body: ListScreen(),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
       floatingActionButton: FloatingActionButton(
         backgroundColor: Color(0xFF6200EE),
@@ -68,124 +74,31 @@ class _HomePageState extends State<HomePage> {
 }
 
 class ApplicationToolbar extends StatelessWidget with PreferredSizeWidget {
+  final GlobalKey<PaginatorState> paginatorGlobalKey = GlobalKey();
   @override
   Widget build(BuildContext context) {
     return AppBar(
       title: Text("GalleryApp"),
       backgroundColor: Color(0xFF29292B),
       actions: <Widget>[
-        IconButton(onPressed: () {
-
-        }, icon: Icon(Icons.grid_view)),
+        IconButton(
+            onPressed: () {
+              paginatorGlobalKey.currentState?.changeState(
+                  listType: ListType.GRID_VIEW,
+                  gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                      crossAxisCount: 2));
+            },
+            icon: Icon(Icons.grid_view)),
         IconButton(onPressed: () {}, icon: Icon(Icons.sort)),
-        IconButton(onPressed: () {FirebaseAuth.instance.signOut();},icon: Icon(Icons.lock_outline)),
+        IconButton(
+            onPressed: () {
+              FirebaseAuth.instance.signOut();
+            },
+            icon: Icon(Icons.lock_outline)),
       ],
     );
   }
 
   @override
   Size get preferredSize => const Size.fromHeight(60);
-}
-
-class CenterContainer extends StatefulWidget {
-  const CenterContainer({Key? key}) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return SafeArea(
-        child: Center(
-            child: Container(
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-      ),
-    )));
-  }
-
-  @override
-  _MyGridScreenState createState() => _MyGridScreenState();
-}
-
-class _MyGridScreenState extends State<CenterContainer> {
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      body: Center(
-          child: GridView.count(
-        primary: false,
-        padding: const EdgeInsets.all(16),
-        crossAxisSpacing: 10,
-        mainAxisSpacing: 10,
-        crossAxisCount: 3,
-        children: List.generate(1000, (index) {
-          return Container(
-            padding: EdgeInsets.all(8),
-            color: Colors.grey,
-            child: Stack(
-              children: <Widget>[
-                Positioned(
-                  child: myPopMenu(),
-                  right: 0,
-                ),
-                Positioned(
-                  child: likePopupMenu(),
-                  bottom: 0,
-                  right: 0,
-                )
-              ],
-            ),
-          );
-        }),
-      )),
-    );
-  }
-}
-
-Widget myPopMenu() {
-  return PopupMenuButton(
-      color: Color(0xFF29292B),
-      enabled: true,
-      onSelected: (value) {},
-      itemBuilder: (context) => [
-            PopupMenuItem(
-                value: 1,
-                child: Row(
-                  children: <Widget>[
-                    Padding(
-                      padding: const EdgeInsets.fromLTRB(2, 2, 8, 2),
-                    ),
-                    Text(
-                      'Share',
-                      style: TextStyle(color: Colors.white),
-                    )
-                  ],
-                )),
-            PopupMenuItem(
-                value: 2,
-                child: Row(
-                  children: <Widget>[
-                    Padding(
-                      padding: const EdgeInsets.fromLTRB(2, 2, 8, 2),
-                    ),
-                    Text('Rename', style: TextStyle(color: Colors.white))
-                  ],
-                )),
-            PopupMenuItem(
-                value: 3,
-                child: Row(
-                  children: <Widget>[
-                    Padding(
-                      padding: const EdgeInsets.fromLTRB(2, 2, 8, 2),
-                    ),
-                    Text('Remove', style: TextStyle(color: Colors.white))
-                  ],
-                )),
-          ]);
-}
-
-Widget likePopupMenu() {
-  return IconButton(
-    onPressed: () {},
-    icon: Icon(Icons.favorite_border_outlined),
-    color: Color(0xFF6200EE),
-  );
 }
