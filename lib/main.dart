@@ -28,10 +28,10 @@ class GalleryApp extends StatelessWidget {
           return AuthScreen();
         }),
       theme: ThemeData(
-        fontFamily: 'RobotoMono',
+          fontFamily: 'RobotoMono',
           primarySwatch: Colors.deepPurple,
           backgroundColor: Colors.deepPurple[200],
-          accentColor: Colors.pinkAccent,
+
           accentColorBrightness: Brightness.dark,
           buttonTheme: ButtonTheme.of(context).copyWith(
             buttonColor: Colors.deepPurple,

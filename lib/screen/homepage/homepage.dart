@@ -1,5 +1,8 @@
+import 'dart:io';
+
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:image_picker/image_picker.dart';
 
 
 class HomePage extends StatefulWidget {
@@ -8,6 +11,14 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
+   var _storeImage;
+  //Method to pick the image via camera
+  Future<void> takePicture() async {
+    final imageFile = await ImagePicker.platform.pickImage(source: ImageSource.camera,);
+    setState(() {
+      _storeImage = imageFile as File;
+    });
+  }
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -19,9 +30,7 @@ class _HomePageState extends State<HomePage> {
       floatingActionButton: FloatingActionButton(
         backgroundColor: Color(0xFF6200EE),
         //Floating action button on Scaffold
-        onPressed: () {
-          //code to execute on button press
-        },
+        onPressed: takePicture,
         child: Icon(Icons.add_a_photo_outlined), //icon inside button
       ),
 
@@ -65,7 +74,9 @@ class ApplicationToolbar extends StatelessWidget with PreferredSizeWidget {
       title: Text("GalleryApp"),
       backgroundColor: Color(0xFF29292B),
       actions: <Widget>[
-        IconButton(onPressed: () {}, icon: Icon(Icons.grid_view)),
+        IconButton(onPressed: () {
+
+        }, icon: Icon(Icons.grid_view)),
         IconButton(onPressed: () {}, icon: Icon(Icons.sort)),
         IconButton(onPressed: () {FirebaseAuth.instance.signOut();},icon: Icon(Icons.lock_outline)),
       ],
