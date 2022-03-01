@@ -18,15 +18,14 @@ class _HomePageState extends State<HomePage> {
   //Method to pick the image via camera
   Future<void> takePicture() async {
     final picker = ImagePicker();
-    final pickedImage = await picker.getImage(source: ImageSource.gallery);
+    final pickedImage = await picker.getImage(source: ImageSource.camera);
     final pickedImageFile = File(pickedImage!.path);
     setState(() {
       _storeImage = pickedImageFile;
     });
   }
-  Future uploadImageToFirebase(BuildContext context) async {
 
-  }
+  Future uploadImageToFirebase(BuildContext context) async {}
 
   @override
   Widget build(BuildContext context) {
@@ -82,7 +81,7 @@ class ApplicationToolbar extends StatelessWidget with PreferredSizeWidget {
   Widget build(BuildContext context) {
     return AppBar(
       title: Text("GalleryApp"),
-      backgroundColor: Color(0xFF29292B),
+      backgroundColor: Theme.of(context).appBarTheme.backgroundColor,
       actions: <Widget>[
         IconButton(
             onPressed: () {

@@ -1,8 +1,9 @@
 import 'dart:io';
-
 import 'package:flutter/material.dart';
 import 'dart:core';
-
+import 'package:path/path.dart' as Path;
+import 'package:path_provider/path_provider.dart' as PathProvider;
+import 'package:firebase_storage/firebase_storage.dart' as firebase_storage;
 import 'package:image_picker/image_picker.dart';
 
 class ListScreen extends StatefulWidget {
@@ -11,27 +12,40 @@ class ListScreen extends StatefulWidget {
 }
 
 class _ListScreenState extends State<ListScreen> {
+  // File _pickedImage;
   List<File> _pickedImage = [];
+  final _picker = ImagePicker();
 
-  
+  // void _selectImage(File pickedImage) {
+  //   _pickedImage = pickedImage;
+  // }
 
   Future<void> _takePicture() async {
-    final ImagePicker _picker = ImagePicker();
-    final pickedImage = await _picker.getImage(source: ImageSource.camera);
+    final pickedImage = await _picker.getImage(source: ImageSource.gallery);
     final pickedImageFile = File(pickedImage!.path);
     setState(() {
       _pickedImage = pickedImageFile as List<File>;
     });
-
+    final appDir = await PathProvider.getApplicationDocumentsDirectory();
+    final fileName = Path.basename(pickedImageFile.path);
+    final savedImage = await pickedImageFile.copy('${appDir.path}/$fileName');
   }
 
+  // Future uploadFile() async {
+  //   for (var img in _pickedImage) {
+  //     reference = firebase_storage.FirebaseStorage.instance
+  //         .ref()
+  //         .child('images/${Path.basename(img.path)}');
+  //     await reference.p
+  //   }
+  // }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
         body: Center(
       child: GridView.builder(
-        itemCount: _pickedImage.length+1,
+          itemCount: _pickedImage.length + 1,
           primary: false,
           padding: const EdgeInsets.all(16),
           gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
@@ -49,9 +63,9 @@ class _ListScreenState extends State<ListScreen> {
                     color: Colors.grey,
                     decoration: BoxDecoration(
                         image: DecorationImage(
-                            image: FileImage(_pickedImage[-1]),
-                        )
-                    ),
+                      fit: BoxFit.cover,
+                      image: FileImage(_pickedImage[-1]),
+                    )),
                     child: Stack(
                       children: <Widget>[
                         Positioned(
