@@ -34,11 +34,15 @@ dependencies:
   firebase_auth: ^3.3.7
   cloud_firestore: ^3.1.8
   firebase_core: ^1.12.0
-  image_picker: ^0.8.4+10
+  image_picker: ^0.8.4+1
   flutter_staggered_grid_view: ^0.6.1
   photo_view: ^0.13.0
   flutter_bloc: ^8.0.1
   flutter_paginator: ^0.0.6
+  repository: ^2.0.0
+  preference_list: ^0.0.1
+  infinite_scroll_pagination: ^3.1.0
+  firebase_storage: ^10.2.9
 
 
 

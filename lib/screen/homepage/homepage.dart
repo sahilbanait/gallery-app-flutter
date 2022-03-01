@@ -24,6 +24,9 @@ class _HomePageState extends State<HomePage> {
       _storeImage = pickedImageFile;
     });
   }
+  Future uploadImageToFirebase(BuildContext context) async {
+
+  }
 
   @override
   Widget build(BuildContext context) {

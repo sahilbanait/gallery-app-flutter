@@ -1,5 +1,9 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
-import 'package:gallery_app/screen/homepage/homepage.dart';
+import 'dart:core';
+
+import 'package:image_picker/image_picker.dart';
 
 class ListScreen extends StatefulWidget {
   @override
@@ -7,37 +11,63 @@ class ListScreen extends StatefulWidget {
 }
 
 class _ListScreenState extends State<ListScreen> {
+  List<File> _pickedImage = [];
+
+  
+
+  Future<void> _takePicture() async {
+    final ImagePicker _picker = ImagePicker();
+    final pickedImage = await _picker.getImage(source: ImageSource.camera);
+    final pickedImageFile = File(pickedImage!.path);
+    setState(() {
+      _pickedImage = pickedImageFile as List<File>;
+    });
+
+  }
+
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Center(
-          child: GridView.count(
-        primary: false,
-        padding: const EdgeInsets.all(16),
-        crossAxisSpacing: 10,
-        mainAxisSpacing: 10,
-        crossAxisCount: 3,
-        children: List.generate(50, (index) {
-          return Container(
-            padding: EdgeInsets.all(8),
-            color: Colors.grey,
-            child: Stack(
-              children: <Widget>[
-                Positioned(
-                  child: listPopMenu(),
-                  right: 0,
-                ),
-                Positioned(
-                  child: listFavButton(),
-                  bottom: 0,
-                  right: 0,
-                )
-              ],
-            ),
-          );
-        }),
-      )),
-    );
+        body: Center(
+      child: GridView.builder(
+        itemCount: _pickedImage.length+1,
+          primary: false,
+          padding: const EdgeInsets.all(16),
+          gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+              crossAxisCount: 3, crossAxisSpacing: 5, mainAxisSpacing: 5),
+          itemBuilder: (context, index) {
+            return index == 0
+                ? Center(
+                    child: IconButton(
+                      icon: Icon(Icons.add),
+                      onPressed: _takePicture,
+                    ),
+                  )
+                : Container(
+                    margin: EdgeInsets.all(3),
+                    color: Colors.grey,
+                    decoration: BoxDecoration(
+                        image: DecorationImage(
+                            image: FileImage(_pickedImage[-1]),
+                        )
+                    ),
+                    child: Stack(
+                      children: <Widget>[
+                        Positioned(
+                          child: listPopMenu(),
+                          right: 0,
+                        ),
+                        Positioned(
+                          child: listFavButton(),
+                          bottom: 0,
+                          right: 0,
+                        )
+                      ],
+                    ),
+                  );
+          }),
+    ));
   }
 }
 
