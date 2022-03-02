@@ -10,33 +10,19 @@ import 'package:path_provider/path_provider.dart' as syspath;
 import 'package:path/path.dart' as path;
 
 class HomePage extends StatefulWidget {
+  static const routeName = '/homepage';
+
   @override
   _HomePageState createState() => _HomePageState();
 }
 
 class _HomePageState extends State<HomePage> {
-  File? _pickedImage;
-  //Method to pick the image via camera
-  Future<void> _takePicture() async {
-    final image = await ImagePicker().pickImage(source: ImageSource.camera);
-    if (image == null) return;
-    final imageFile = await saveImagePermantely(image.path);
-    setState(() {
-      this._pickedImage = imageFile;
-    });
-  }
-
-  Future<File> saveImagePermantely(String imgpath) async {
-    final dir = await syspath.getApplicationDocumentsDirectory();
-    final name = path.basename(imgpath);
-    final image = File('${dir.path}/$name');
-    return File(imgpath).copy(image.path);
-  }
-
   Future uploadImageToFirebase(BuildContext context) async {}
 
   @override
   Widget build(BuildContext context) {
+
+
     return Scaffold(
       backgroundColor: Colors.grey,
       appBar: ApplicationToolbar(),
@@ -47,20 +33,17 @@ class _HomePageState extends State<HomePage> {
         backgroundColor: Color(0xFF6200EE),
         //Floating action button on Scaffold
         onPressed: () {
-          _takePicture();
+          Navigator.of(context).pushNamed(ImageInput.routName);
         },
         child: Icon(Icons.add_a_photo_outlined), //icon inside button
       ),
-
       //floating action button position to center
-
       bottomNavigationBar: BottomAppBar(
         //bottom navigation bar on scaffold
         color: Color(0xFF29292B),
         shape: CircularNotchedRectangle(),
         elevation: 0,
         //shape of notch
-
         //notche margin between floating button and bottom appbar
         child: BottomNavigationBar(
           backgroundColor: Theme.of(context).primaryColor.withAlpha(0),

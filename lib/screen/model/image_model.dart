@@ -3,11 +3,11 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
 class Images {
-  File image = [] as File;
+  final File image;
   Images({required this.image});
 }
 
-class ListImages {
-  List<Images> _list = [];
-  List<Images> get list => _list;
+class ImageDate {
+  final DateTime dateTime;
+  ImageDate({required this.dateTime});
 }
