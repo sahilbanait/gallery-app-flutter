@@ -6,6 +6,8 @@ import 'package:flutter_paginator/flutter_paginator.dart';
 import 'package:gallery_app/screen/widget/image_picker.dart';
 import 'package:gallery_app/screen/widget/list_screen.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:path_provider/path_provider.dart' as syspath;
+import 'package:path/path.dart' as path;
 
 class HomePage extends StatefulWidget {
   @override
@@ -13,16 +15,22 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-  var _storeImage;
-
+  File? _pickedImage;
   //Method to pick the image via camera
-  Future<void> takePicture() async {
-    final picker = ImagePicker();
-    final pickedImage = await picker.getImage(source: ImageSource.camera);
-    final pickedImageFile = File(pickedImage!.path);
+  Future<void> _takePicture() async {
+    final image = await ImagePicker().pickImage(source: ImageSource.camera);
+    if (image == null) return;
+    final imageFile = await saveImagePermantely(image.path);
     setState(() {
-      _storeImage = pickedImageFile;
+      this._pickedImage = imageFile;
     });
+  }
+
+  Future<File> saveImagePermantely(String imgpath) async {
+    final dir = await syspath.getApplicationDocumentsDirectory();
+    final name = path.basename(imgpath);
+    final image = File('${dir.path}/$name');
+    return File(imgpath).copy(image.path);
   }
 
   Future uploadImageToFirebase(BuildContext context) async {}
@@ -38,7 +46,9 @@ class _HomePageState extends State<HomePage> {
       floatingActionButton: FloatingActionButton(
         backgroundColor: Color(0xFF6200EE),
         //Floating action button on Scaffold
-        onPressed: takePicture,
+        onPressed: () {
+          _takePicture();
+        },
         child: Icon(Icons.add_a_photo_outlined), //icon inside button
       ),
 
@@ -77,6 +87,7 @@ class _HomePageState extends State<HomePage> {
 
 class ApplicationToolbar extends StatelessWidget with PreferredSizeWidget {
   final GlobalKey<PaginatorState> paginatorGlobalKey = GlobalKey();
+
   @override
   Widget build(BuildContext context) {
     return AppBar(

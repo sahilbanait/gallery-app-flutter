@@ -1,10 +1,12 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'dart:core';
-import 'package:path/path.dart' as Path;
-import 'package:path_provider/path_provider.dart' as PathProvider;
+import 'package:path/path.dart' as path;
 import 'package:firebase_storage/firebase_storage.dart' as firebase_storage;
 import 'package:image_picker/image_picker.dart';
+import 'package:path_provider/path_provider.dart' as syspath;
+
+import '../providers/ImagesList.dart';
 
 class ListScreen extends StatefulWidget {
   @override
@@ -12,24 +14,24 @@ class ListScreen extends StatefulWidget {
 }
 
 class _ListScreenState extends State<ListScreen> {
-  // File _pickedImage;
-  List<File> _pickedImage = [];
-  final _picker = ImagePicker();
-
-  // void _selectImage(File pickedImage) {
-  //   _pickedImage = pickedImage;
-  // }
+  File? _pickedImage;
 
   Future<void> _takePicture() async {
-    final pickedImage = await _picker.getImage(source: ImageSource.gallery);
-    final pickedImageFile = File(pickedImage!.path);
+    final image = await ImagePicker().pickImage(source: ImageSource.camera);
+    if (image == null) return;
+    final imageFile = await saveImagePermantely(image.path);
     setState(() {
-      _pickedImage = pickedImageFile as List<File>;
+      this._pickedImage = imageFile;
     });
-    final appDir = await PathProvider.getApplicationDocumentsDirectory();
-    final fileName = Path.basename(pickedImageFile.path);
-    final savedImage = await pickedImageFile.copy('${appDir.path}/$fileName');
   }
+  Future<File> saveImagePermantely(String imgpath) async {
+    final dir = await syspath.getApplicationDocumentsDirectory();
+    final name = path.basename(imgpath);
+    final image = File('${dir.path}/$name');
+
+    return File(imgpath).copy(image.path);
+  }
+
 
   // Future uploadFile() async {
   //   for (var img in _pickedImage) {
@@ -45,9 +47,9 @@ class _ListScreenState extends State<ListScreen> {
     return Scaffold(
         body: Center(
       child: GridView.builder(
-          itemCount: _pickedImage.length + 1,
+
           primary: false,
-          padding: const EdgeInsets.all(16),
+          padding: EdgeInsets.all(16),
           gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
               crossAxisCount: 3, crossAxisSpacing: 5, mainAxisSpacing: 5),
           itemBuilder: (context, index) {
@@ -59,13 +61,10 @@ class _ListScreenState extends State<ListScreen> {
                     ),
                   )
                 : Container(
-                    margin: EdgeInsets.all(3),
-                    color: Colors.grey,
                     decoration: BoxDecoration(
                         image: DecorationImage(
-                      fit: BoxFit.cover,
-                      image: FileImage(_pickedImage[-1]),
-                    )),
+                            image: FileImage(_pickedImage!),
+                            fit: BoxFit.cover)),
                     child: Stack(
                       children: <Widget>[
                         Positioned(
@@ -83,7 +82,8 @@ class _ListScreenState extends State<ListScreen> {
           }),
     ));
   }
-}
+
+
 
 Widget listPopMenu() {
   return PopupMenuButton(
