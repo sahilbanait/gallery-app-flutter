@@ -77,7 +77,7 @@ class _ImagePickerState extends State<ImageInput> {
             if(_imageItem !=null)
             FlatButton.icon(
                 onPressed: () {
-                    Navigator.of(context).pushNamed(HomePage.routeName,arguments: _imageItem );
+
                   Navigator.of(context).pushAndRemoveUntil(MaterialPageRoute(builder: (context) => HomePage()), (route) => false);
                 }, icon: Icon(Icons.done), label: Text('Upload'),
 
