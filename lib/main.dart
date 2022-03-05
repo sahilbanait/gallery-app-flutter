@@ -4,12 +4,14 @@ import 'package:gallery_app/screen/homepage/wrapper.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:gallery_app/screen/model/image_model.dart';
-import 'package:gallery_app/screen/providers/image_provider.dart';
+import 'package:gallery_app/screen/widget/list_screen.dart';
+
 import 'package:provider/provider.dart';
 import 'package:gallery_app/screen/authentication/services/auth_screen.dart';
 import 'package:gallery_app/screen/widget/image_picker.dart';
 import 'package:image_picker/image_picker.dart';
+
+import 'model/image_provider.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -51,7 +53,8 @@ class GalleryApp extends StatelessWidget {
           title: "Gallery App",
           routes: {
             ImageInput.routName: (context) => ImageInput(),
-            HomePage.routeName: (context) => HomePage()
+            HomePage.routeName: (context) => HomePage(),
+            ListScreen.routName: (context) => ListScreen()
           }),
     );
     ;

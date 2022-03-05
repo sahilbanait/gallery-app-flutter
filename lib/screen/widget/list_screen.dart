@@ -1,6 +1,6 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
-import 'package:gallery_app/screen/providers/image_provider.dart';
+
 import 'package:gallery_app/screen/widget/image_grid.dart';
 import 'dart:core';
 import 'package:path/path.dart' as path;
@@ -8,26 +8,15 @@ import 'package:firebase_storage/firebase_storage.dart' as firebase_storage;
 import 'package:image_picker/image_picker.dart';
 import 'package:path_provider/path_provider.dart' as syspath;
 import 'package:provider/provider.dart';
-
-import '../model/image_model.dart';
+import '../../model/image_provider.dart';
 
 class ListScreen extends StatefulWidget {
+  static const routName = '/list-screen';
   @override
   _ListScreenState createState() => _ListScreenState();
 }
 
 class _ListScreenState extends State<ListScreen> {
-
-
-  // Future uploadFile() async {
-  //   for (var img in _pickedImage) {
-  //     reference = firebase_storage.FirebaseStorage.instance
-  //         .ref()
-  //         .child('images/${Path.basename(img.path)}');
-  //     await reference.p
-  //   }
-  // }
-
   @override
   Widget build(BuildContext context) {
     final imageData = Provider.of<ImageList>(context);
@@ -39,13 +28,58 @@ class _ListScreenState extends State<ListScreen> {
           primary: false,
           padding: EdgeInsets.all(16),
           gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-              crossAxisCount: 3, crossAxisSpacing: 5, mainAxisSpacing: 5),
-          itemBuilder: (context, index) {
-            return  ImageGrid(image[index].image);
-          }),
+              childAspectRatio: 3 / 4,
+              crossAxisCount: 3,
+              crossAxisSpacing: 5,
+              mainAxisSpacing: 5),
+          itemBuilder: (context, index) => ChangeNotifierProvider.value(
+                value: image[index],
+                child: ImageGrid(),
+              )),
     ));
   }
 
+  Widget listPopMenu() {
+    return PopupMenuButton(
+        color: Color(0xFF29292B),
+        enabled: true,
+        onSelected: (value) {},
+        itemBuilder: (context) => [
+              PopupMenuItem(
+                  value: 1,
+                  child: Row(
+                    children: <Widget>[
+                      Padding(
+                        padding: const EdgeInsets.fromLTRB(2, 2, 8, 2),
+                      ),
+                      Text(
+                        'Share',
+                        style: TextStyle(color: Colors.white),
+                      )
+                    ],
+                  )),
+              PopupMenuItem(
+                  value: 2,
+                  child: Row(
+                    children: <Widget>[
+                      Padding(
+                        padding: const EdgeInsets.fromLTRB(2, 2, 8, 2),
+                      ),
+                      Text('Rename', style: TextStyle(color: Colors.white))
+                    ],
+                  )),
+              PopupMenuItem(
+                  value: 3,
+                  child: Row(
+                    children: <Widget>[
+                      Padding(
+                        padding: const EdgeInsets.fromLTRB(2, 2, 8, 2),
+                      ),
+                      Text('Remove', style: TextStyle(color: Colors.white))
+                    ],
+                  )),
+            ]);
+  }
 
   Widget listFavButton() {
     return IconButton(

@@ -5,6 +5,7 @@ import 'package:flutter_paginator/enums.dart';
 import 'package:flutter_paginator/flutter_paginator.dart';
 import 'package:gallery_app/screen/widget/image_picker.dart';
 import 'package:gallery_app/screen/widget/list_screen.dart';
+import 'package:gallery_app/screen/widget/shared.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:path_provider/path_provider.dart' as syspath;
 import 'package:path/path.dart' as path;
@@ -17,17 +18,31 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-  Future uploadImageToFirebase(BuildContext context) async {}
+  int _selectedIndex = 0;
+  static const List<Widget> _widgetOptions = <Widget>[
+    Text(
+      'Index 0: Home',
+    ),
+    Text(
+      'Index 1: Shared',
+    ),
+  ];
+
+  void _onItemTapped(int index) {
+    setState(() {
+      _selectedIndex = index;
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
-
-
     return Scaffold(
       backgroundColor: Colors.grey,
       appBar: ApplicationToolbar(),
       extendBody: true,
-      body: ListScreen(),
+      body: Center(
+        child: _selectedIndex == 0 ? ListScreen() : Shared(),
+      ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
       floatingActionButton: FloatingActionButton(
         backgroundColor: Color(0xFF6200EE),
@@ -52,6 +67,8 @@ class _HomePageState extends State<HomePage> {
           selectedItemColor: Color(0xFF6200EE),
           unselectedItemColor: Colors.white,
           selectedFontSize: 16.0,
+          currentIndex: _selectedIndex,
+          onTap: _onItemTapped,
           selectedLabelStyle: TextStyle(fontWeight: FontWeight.bold),
           unselectedLabelStyle: TextStyle(fontWeight: FontWeight.bold),
           items: [
