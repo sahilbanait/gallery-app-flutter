@@ -24,39 +24,35 @@ class GalleryApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ChangeNotifierProvider(
-      create: (context) => ImageList(),
-      child: MaterialApp(
-          debugShowCheckedModeBanner: false,
-          home: StreamBuilder(
-              stream: FirebaseAuth.instance.authStateChanges(),
-              builder: (context, snapshot) {
-                if (snapshot.hasData) {
-                  return HomePage();
-                }
-                return AuthScreen();
-              }),
-          theme: ThemeData(
-              fontFamily: 'RobotoMono',
-              primarySwatch: Colors.deepPurple,
-              backgroundColor: Colors.deepPurple[200],
-              appBarTheme: AppBarTheme.of(context).copyWith(
-                backgroundColor: Color(0xFF29292B),
-              ),
-              accentColorBrightness: Brightness.dark,
-              buttonTheme: ButtonTheme.of(context).copyWith(
-                buttonColor: Colors.deepPurple,
-                textTheme: ButtonTextTheme.primary,
-                shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(20)),
-              )),
-          title: "Gallery App",
-          routes: {
-            ImageInput.routName: (context) => ImageInput(),
-            HomePage.routeName: (context) => HomePage(),
-            ListScreen.routName: (context) => ListScreen()
-          }),
-    );
-    ;
+    return MaterialApp(
+        debugShowCheckedModeBanner: false,
+        home: StreamBuilder(
+            stream: FirebaseAuth.instance.authStateChanges(),
+            builder: (context, snapshot) {
+              if (snapshot.hasData) {
+                return HomePage();
+              }
+              return AuthScreen();
+            }),
+        theme: ThemeData(
+            fontFamily: 'RobotoMono',
+            primarySwatch: Colors.deepPurple,
+            backgroundColor: Colors.deepPurple[200],
+            appBarTheme: AppBarTheme.of(context).copyWith(
+              backgroundColor: Color(0xFF29292B),
+            ),
+            accentColorBrightness: Brightness.dark,
+            buttonTheme: ButtonTheme.of(context).copyWith(
+              buttonColor: Colors.deepPurple,
+              textTheme: ButtonTextTheme.primary,
+              shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(20)),
+            )),
+        title: "Gallery App",
+        routes: {
+          ImageInput.routName: (context) => ImageInput(),
+          HomePage.routeName: (context) => HomePage(),
+          ListScreen.routName: (context) => ListScreen()
+        });
   }
 }

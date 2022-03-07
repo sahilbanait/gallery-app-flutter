@@ -1,7 +1,5 @@
 import 'dart:io';
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_storage/firebase_storage.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
@@ -38,7 +36,8 @@ class _ImagePickerState extends State<ImageInput> {
 
   // Select and image from the gallery or take a picture with the camera
   // Then upload to Firebase Storage
-  Future<void> _upload(String inputSource) async {
+
+  Future<void> upload(String inputSource) async {
     XFile? pickedImage;
     final picker = ImagePicker();
     try {
@@ -50,9 +49,13 @@ class _ImagePickerState extends State<ImageInput> {
 
       final String fileName = path.basename(pickedImage!.path);
       File imageFile = File(pickedImage.path);
+      final appDir = await syspath.getApplicationDocumentsDirectory();
+      final filename = path.basename(pickedImage.path);
+      final savedImage = await imageFile.copy('${appDir.path}/$filename');
 
       try {
         // Uploading the selected image with some custom meta data
+        // final ref = storage.ref('GalleryApp/Images/').child(fileName);
         await storage.ref(fileName).putFile(
             imageFile,
             SettableMetadata(
@@ -72,14 +75,6 @@ class _ImagePickerState extends State<ImageInput> {
     }
   }
 
-  // Delete the selected image
-  // This function is called when a trash icon is pressed
-  Future<void> _delete(String ref) async {
-    await storage.ref(ref).delete();
-    // Rebuild the UI
-    setState(() {});
-  }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -93,17 +88,24 @@ class _ImagePickerState extends State<ImageInput> {
             child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: <Widget>[
-            Row(
+            Column(
               mainAxisAlignment: MainAxisAlignment.spaceAround,
               children: [
                 ElevatedButton.icon(
-                    onPressed: () => _upload('camera'),
+                    onPressed: () => upload('camera'),
                     icon: const Icon(Icons.camera),
                     label: const Text('camera')),
                 ElevatedButton.icon(
-                    onPressed: () => _upload('gallery'),
+                    onPressed: () => upload('gallery'),
                     icon: const Icon(Icons.library_add),
                     label: const Text('Gallery')),
+                Padding(
+                  padding: EdgeInsets.all(16),
+                  child: Container(
+                    width: 100,
+                    height: 400,
+                  ),
+                )
               ],
             ),
           ],
