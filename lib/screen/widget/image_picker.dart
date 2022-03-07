@@ -1,10 +1,9 @@
 import 'dart:io';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:gallery_app/screen/homepage/homepage.dart';
-import 'package:gallery_app/screen/widget/list_screen.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:path_provider/path_provider.dart' as syspath;
 import 'package:path/path.dart' as path;
@@ -56,10 +55,8 @@ class _ImagePickerState extends State<ImageInput> {
         // Uploading the selected image with some custom meta data
         await storage.ref(fileName).putFile(
             imageFile,
-            SettableMetadata(customMetadata: {
-              'uploaded_by': '',
-              'uploaded_date': 'HttpHeaders.DATE'
-            }));
+            SettableMetadata(
+                customMetadata: {'uploaded_by': '', 'uploaded_date': 'Date'}));
 
         // Refresh the UI
         setState(() {});

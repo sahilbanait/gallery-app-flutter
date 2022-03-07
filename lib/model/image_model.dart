@@ -1,9 +1,11 @@
 import 'dart:io';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
 class Images with ChangeNotifier {
   final String image;
+  FirebaseStorage storage = FirebaseStorage.instance;
   bool isFavourite;
 
   Images({required this.image, this.isFavourite = false});
@@ -16,6 +18,5 @@ class Images with ChangeNotifier {
 
 class ImageDate {
   final DateTime dateTime;
-
   ImageDate({required this.dateTime});
 }
