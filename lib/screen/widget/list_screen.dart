@@ -51,7 +51,8 @@ class _ListScreenState extends State<ListScreen> {
       setState(() {});
     }
 
-    final imageData = Provider.of<Images>(context);
+    //
+    // final imageData = Provider.of<Images>(context);
     return Scaffold(
         body: Center(
             child: FutureBuilder(
@@ -79,15 +80,15 @@ class _ListScreenState extends State<ListScreen> {
                               ),
                             ),
                             footer: GridTileBar(
-                              leading: IconButton(
-                                icon: Icon(imageData.isFavourite
-                                    ? Icons.favorite
-                                    : Icons.favorite_border),
-                                onPressed: () {
-                                  imageData.toggleFavoriteStatus();
-                                },
-                              ),
-                            ),
+                                // leading: IconButton(
+                                //   icon: Icon(imageData.isFavourite
+                                //       ? Icons.favorite
+                                //       : Icons.favorite_border),
+                                //   onPressed: () {
+                                //     imageData.toggleFavoriteStatus();
+                                //   },
+                                // ),
+                                ),
                             header: GridTileBar(
                               leading: listPopMenu(),
                             ));
