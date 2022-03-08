@@ -48,7 +48,11 @@ class _HomePageState extends State<HomePage> {
         backgroundColor: Color(0xFF6200EE),
         //Floating action button on Scaffold
         onPressed: () {
-          Navigator.of(context).pushNamed(ImageInput.routName);
+          showModalBottomSheet(
+              context: context,
+              builder: (context){
+                return ImageInput();
+              });
         },
         child: Icon(Icons.add_a_photo_outlined), //icon inside button
       ),
@@ -99,10 +103,13 @@ class ApplicationToolbar extends StatelessWidget with PreferredSizeWidget {
               paginatorGlobalKey.currentState?.changeState(
                   listType: ListType.GRID_VIEW,
                   gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                      crossAxisCount: 2));
+                      crossAxisCount: 6));
             },
             icon: Icon(Icons.grid_view)),
-        IconButton(onPressed: () {}, icon: Icon(Icons.sort)),
+
+        IconButton(onPressed: () {
+
+        }, icon: Icon(Icons.sort)),
         IconButton(
             onPressed: () {
               FirebaseAuth.instance.signOut();

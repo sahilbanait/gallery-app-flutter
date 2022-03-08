@@ -34,10 +34,11 @@ class _AuthScreenState extends State<AuthScreen> {
     } on PlatformException catch (e) {
       print(e.message.toString().trim());
       var message = 'An error occurred';
+
       if (e.message != null) {
         message = e.message.toString().trim();
+        ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(message)));
       }
-      ScaffoldMessenger.of(ctx).showSnackBar(SnackBar(content: Text(message)));
 
       setState(() {
         _isLoading = false;

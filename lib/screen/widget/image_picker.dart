@@ -6,7 +6,7 @@ import 'package:image_picker/image_picker.dart';
 import 'package:path_provider/path_provider.dart' as syspath;
 import 'package:path/path.dart' as path;
 
-class ImageInput extends StatefulWidget {
+class ImageInput extends StatefulWidget with ChangeNotifier {
   static const routName = '/image-picker';
 
   @override
@@ -14,25 +14,7 @@ class ImageInput extends StatefulWidget {
 }
 
 class _ImagePickerState extends State<ImageInput> {
-  // File? _imageItem;
   FirebaseStorage storage = FirebaseStorage.instance;
-
-  // Future<void> _uploadImage(ImageSource imageSource) async {
-  //   final picker = ImagePicker();
-  //   final imageFile = await ImagePicker().pickImage(source: imageSource);
-  //   setState(() {
-  //     if (imageFile != null) {
-  //       _imageItem = File(imageFile.path);
-  //     } else {
-  //       print('No image selected.');
-  //     }
-  //     _imageItem = File(imageFile!.path);
-  //   });
-  //
-  //   final appDir = await syspath.getApplicationDocumentsDirectory();
-  //   final fileName = path.basename(imageFile!.path);
-  //   final savedImage = await imageFile.saveTo('${appDir.path}/$fileName');
-  // }
 
   // Select and image from the gallery or take a picture with the camera
   // Then upload to Firebase Storage
@@ -60,9 +42,6 @@ class _ImagePickerState extends State<ImageInput> {
             imageFile,
             SettableMetadata(
                 customMetadata: {'uploaded_by': '', 'uploaded_date': 'Date'}));
-
-        // Refresh the UI
-        setState(() {});
       } on FirebaseException catch (error) {
         if (kDebugMode) {
           print(error);
@@ -77,40 +56,23 @@ class _ImagePickerState extends State<ImageInput> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text('Pick Image'),
-        backgroundColor: Theme.of(context).primaryColor,
+    return Column(mainAxisSize: MainAxisSize.min, children: <Widget>[
+      ListTile(
+        leading: new Icon(Icons.camera),
+        title: new Text('Camera'),
+        onTap: () {
+          upload('camera');
+          Navigator.pop(context);
+        },
       ),
-      body: Padding(
-        padding: EdgeInsets.all(16),
-        child: Center(
-            child: Column(
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: <Widget>[
-            Column(
-              mainAxisAlignment: MainAxisAlignment.spaceAround,
-              children: [
-                ElevatedButton.icon(
-                    onPressed: () => upload('camera'),
-                    icon: const Icon(Icons.camera),
-                    label: const Text('camera')),
-                ElevatedButton.icon(
-                    onPressed: () => upload('gallery'),
-                    icon: const Icon(Icons.library_add),
-                    label: const Text('Gallery')),
-                Padding(
-                  padding: EdgeInsets.all(16),
-                  child: Container(
-                    width: 100,
-                    height: 400,
-                  ),
-                )
-              ],
-            ),
-          ],
-        )),
+      ListTile(
+        leading: new Icon(Icons.library_add),
+        title: new Text('Gallery'),
+        onTap: () {
+          upload('gallery');
+          Navigator.pop(context);
+        },
       ),
-    );
+    ]);
   }
 }

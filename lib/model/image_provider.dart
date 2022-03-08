@@ -4,43 +4,45 @@ import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'image_model.dart';
 
-class ImageList {
+class ImageList with ChangeNotifier {
   FirebaseStorage storage = FirebaseStorage.instance;
+
   List<Images> _images = [
-    Images(
-        image:
-            'https://cdn.pixabay.com/photo/2022/02/25/08/13/blood-oranges-7033738_960_720.jpg'),
-    Images(
-        image:
-            'https://cdn.pixabay.com/photo/2022/02/25/08/13/blood-oranges-7033738_960_720.jpg'),
-    Images(
-        image:
-            'https://cdn.pixabay.com/photo/2022/02/25/08/13/blood-oranges-7033738_960_720.jpg'),
-    Images(
-        image:
-            'https://cdn.pixabay.com/photo/2022/02/25/08/13/blood-oranges-7033738_960_720.jpg'),
-    Images(
-        image:
-            'https://cdn.pixabay.com/photo/2022/02/25/08/13/blood-oranges-7033738_960_720.jpg'),
-    Images(
-        image:
-            'https://cdn.pixabay.com/photo/2022/02/25/08/13/blood-oranges-7033738_960_720.jpg'),
-    Images(
-        image:
-            'https://cdn.pixabay.com/photo/2022/02/25/08/13/blood-oranges-7033738_960_720.jpg'),
-    Images(
-        image:
-            'https://cdn.pixabay.com/photo/2022/02/25/08/13/blood-oranges-7033738_960_720.jpg'),
-    Images(
-        image:
-            'https://cdn.pixabay.com/photo/2022/02/25/08/13/blood-oranges-7033738_960_720.jpg'),
   ];
 
   List<Images> get images => [..._images];
 
-  void addImage() {}
+  Future<List<Map<String, dynamic>>> addImage() {
+    return  _loadImages();
+    notifyListeners();
+  }
 
   Images findById(String image) {
     return _images.firstWhere((img) => img.image == image);
   }
+  Future<List<Map<String, dynamic>>> _loadImages() async {
+    List<Map<String, dynamic>> files = [];
+    final ListResult result = await storage.ref().list();
+    final List<Reference> allFiles = result.items;
+    await Future.forEach<Reference>(allFiles, (file) async {
+      final String fileUrl = await file.getDownloadURL();
+      final FullMetadata fileMeta = await file.getMetadata();
+      files.add({
+        "url": fileUrl,
+        "path": file.fullPath,
+        "uploaded_by": fileMeta.customMetadata?['uploaded_by'] ?? 'Nobody',
+        "description": fileMeta.customMetadata?['description'] ?? 'No description',
+        "uploaded_date": fileMeta.customMetadata?['date']
+      });
+    });
+
+    return files;
+
+  }
+  // Delete the selected image
+  // This function is called when a trash icon is pressed
+  Future<void> delete(String ref) async {
+    await storage.ref(ref).delete();
+  }
+
 }
