@@ -6,13 +6,11 @@ import 'image_model.dart';
 
 class ImageList with ChangeNotifier {
   FirebaseStorage storage = FirebaseStorage.instance;
-
   List<Images> _images = [];
-
   List<Images> get images => [..._images];
 
-  Future<List<Map<String, dynamic>>> addImage() {
-    return _loadImages();
+  ImageList() {
+    loadImages();
     notifyListeners();
   }
 
@@ -20,7 +18,7 @@ class ImageList with ChangeNotifier {
     return _images.firstWhere((img) => img.image == image);
   }
 
-  Future<List<Map<String, dynamic>>> _loadImages() async {
+  Future<List<Map<String, dynamic>>> loadImages() async {
     List<Map<String, dynamic>> files = [];
     final ListResult result = await storage.ref().list();
     final List<Reference> allFiles = result.items;
@@ -36,14 +34,12 @@ class ImageList with ChangeNotifier {
         "uploaded_date": fileMeta.customMetadata?['']
       });
     });
-
     return files;
-    notifyListeners();
   }
 
   // Delete the selected image
   // This function is called when a trash icon is pressed
-  Future<void> _delete(String ref) async {
+  Future<void> delete(String ref) async {
     await storage.ref(ref).delete();
   }
 }

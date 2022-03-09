@@ -15,12 +15,6 @@ class ListScreen extends StatefulWidget {
 }
 
 class _ListScreenState extends State<ListScreen> {
-  bool isFavourite = false;
-
-  void _toggleFavoriteStatus() {
-    isFavourite = !isFavourite;
-  }
-
   @override
   Widget build(BuildContext context) {
     FirebaseStorage storage = FirebaseStorage.instance;
@@ -28,7 +22,7 @@ class _ListScreenState extends State<ListScreen> {
     return Scaffold(
         body: Center(
             child: FutureBuilder(
-                future: imageData.addImage(),
+                future: imageData.loadImages(),
                 builder: (context,
                     AsyncSnapshot<List<Map<String, dynamic>>> snapshot) {
                   if (snapshot.connectionState == ConnectionState.done) {

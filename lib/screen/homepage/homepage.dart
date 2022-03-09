@@ -50,7 +50,7 @@ class _HomePageState extends State<HomePage> {
         onPressed: () {
           showModalBottomSheet(
               context: context,
-              builder: (context){
+              builder: (context) {
                 return ImageInput();
               });
         },
@@ -106,10 +106,7 @@ class ApplicationToolbar extends StatelessWidget with PreferredSizeWidget {
                       crossAxisCount: 6));
             },
             icon: Icon(Icons.grid_view)),
-
-        IconButton(onPressed: () {
-
-        }, icon: Icon(Icons.sort)),
+        IconButton(onPressed: () {}, icon: Icon(Icons.sort)),
         IconButton(
             onPressed: () {
               FirebaseAuth.instance.signOut();

@@ -5,9 +5,7 @@ import 'package:flutter/material.dart';
 
 class Images with ChangeNotifier {
   final String image;
-  FirebaseStorage storage = FirebaseStorage.instance;
   bool isFavourite;
-
   Images({required this.image, this.isFavourite = false});
 
   void toggleFavoriteStatus() {
