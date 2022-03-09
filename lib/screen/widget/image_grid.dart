@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -12,11 +13,11 @@ class ImageGrid extends StatelessWidget {
     final image = Provider.of<Images>(context);
     return GridTile(
         child: GestureDetector(
-          child: Image.network(
-            image.image,
-            fit: BoxFit.cover,
-          ),
-        ),
+            child: CachedNetworkImage(
+          imageUrl: image.image,
+          placeholder: (context, url) => new CircularProgressIndicator(),
+          errorWidget: (context, url, error) => new Icon(Icons.error),
+        )),
         footer: GridTileBar(
           leading: IconButton(
             icon: Icon(
