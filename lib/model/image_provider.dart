@@ -1,3 +1,4 @@
+import 'dart:ffi';
 import 'dart:io';
 
 import 'package:firebase_storage/firebase_storage.dart';
@@ -6,7 +7,7 @@ import 'image_model.dart';
 
 class ImageList with ChangeNotifier {
   FirebaseStorage storage = FirebaseStorage.instance;
-  List<Images> _images = [];
+  List<Images> _images =  [];
   List<Images> get images => [..._images];
 
   ImageList() {

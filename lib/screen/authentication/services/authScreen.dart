@@ -2,7 +2,8 @@ import 'package:flutter/services.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:gallery_app/screen/authentication/services/auth_form.dart';
+import 'package:fluttertoast/fluttertoast.dart';
+import 'package:gallery_app/screen/authentication/services/authForm.dart';
 
 class AuthScreen extends StatefulWidget {
   @override
@@ -10,6 +11,8 @@ class AuthScreen extends StatefulWidget {
 }
 
 class _AuthScreenState extends State<AuthScreen> {
+  final GlobalKey<ScaffoldMessengerState> scaffoldMessengerKey = GlobalKey<ScaffoldMessengerState>();
+
   final _auth = FirebaseAuth.instance;
   var _isLoading = false;
 
@@ -37,19 +40,21 @@ class _AuthScreenState extends State<AuthScreen> {
 
       if (e.message != null) {
         message = e.message.toString().trim();
-        ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(message)));
-      }
+        Fluttertoast.showToast(msg: message);
 
+      }
       setState(() {
         _isLoading = false;
       });
     } catch (e) {
       print(e);
     }
+
   }
 
   @override
   Widget build(BuildContext context) {
+    scaffoldMessengerKey.currentState?.showSnackBar(SnackBar(content: Text('Login Successful')));
     return Scaffold(
       backgroundColor: Colors.deepPurple[200],
       appBar: AppBar(

@@ -5,11 +5,12 @@ import 'package:gallery_app/screen/homepage/wrapper.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:gallery_app/screen/widget/list_screen.dart';
+import 'package:gallery_app/screen/widget/imageDetailScreen.dart';
+import 'package:gallery_app/screen/widget/listScreen.dart';
 
 import 'package:provider/provider.dart';
-import 'package:gallery_app/screen/authentication/services/auth_screen.dart';
-import 'package:gallery_app/screen/widget/image_picker.dart';
+import 'package:gallery_app/screen/authentication/services/authScreen.dart';
+import 'package:gallery_app/screen/widget/imagePicker.dart';
 import 'package:image_picker/image_picker.dart';
 
 import 'model/image_provider.dart';
@@ -57,7 +58,8 @@ class GalleryApp extends StatelessWidget {
             routes: {
               ImageInput.routName: (context) => ImageInput(),
               HomePage.routeName: (context) => HomePage(),
-              ListScreen.routName: (context) => ListScreen()
+              ListScreen.routName: (context) => ListScreen(),
+              ImageDetail.routName:(context) => ImageDetail()
             }));
   }
 }

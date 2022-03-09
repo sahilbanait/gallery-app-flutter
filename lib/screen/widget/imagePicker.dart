@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -38,10 +39,16 @@ class _ImagePickerState extends State<ImageInput> {
       try {
         // Uploading the selected image with some custom meta data
         // final ref = storage.ref('GalleryApp/Images/').child(fileName);
+        final now = DateTime.now();
+
+
         await storage.ref(fileName).putFile(
             imageFile,
             SettableMetadata(
-                customMetadata: {'uploaded_by': '', 'uploaded_date': 'Date'}));
+                customMetadata:
+                {'uploaded_by': '',
+                  'uploaded_date': '${now.toLocal()}'})
+        );
       } on FirebaseException catch (error) {
         if (kDebugMode) {
           print(error);
@@ -70,7 +77,7 @@ class _ImagePickerState extends State<ImageInput> {
         title: new Text('Gallery'),
         onTap: () {
           upload('gallery');
-          Navigator.pop(context);
+            Navigator.pop(context);
         },
       ),
     ]);

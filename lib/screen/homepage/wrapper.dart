@@ -1,5 +1,5 @@
 
-import 'package:gallery_app/screen/authentication/services/auth_screen.dart';
+import 'package:gallery_app/screen/authentication/services/authScreen.dart';
 import 'package:flutter/material.dart';
 import 'package:gallery_app/main.dart';
 

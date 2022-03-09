@@ -3,8 +3,8 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_paginator/enums.dart';
 import 'package:flutter_paginator/flutter_paginator.dart';
-import 'package:gallery_app/screen/widget/image_picker.dart';
-import 'package:gallery_app/screen/widget/list_screen.dart';
+import 'package:gallery_app/screen/widget/imagePicker.dart';
+import 'package:gallery_app/screen/widget/listScreen.dart';
 import 'package:gallery_app/screen/widget/shared.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:path_provider/path_provider.dart' as syspath;
@@ -18,6 +18,7 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
+
   int _selectedIndex = 0;
   static const List<Widget> _widgetOptions = <Widget>[
     Text(
@@ -33,7 +34,9 @@ class _HomePageState extends State<HomePage> {
       _selectedIndex = index;
     });
   }
+void changeGrid(){
 
+}
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -92,6 +95,12 @@ class _HomePageState extends State<HomePage> {
 class ApplicationToolbar extends StatelessWidget with PreferredSizeWidget {
   final GlobalKey<PaginatorState> paginatorGlobalKey = GlobalKey();
 
+  void _changeGrid(){
+    paginatorGlobalKey.currentState?.changeState(
+        listType: ListType.GRID_VIEW,
+        gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+            crossAxisCount: 6));
+  }
   @override
   Widget build(BuildContext context) {
     return AppBar(
@@ -99,11 +108,8 @@ class ApplicationToolbar extends StatelessWidget with PreferredSizeWidget {
       backgroundColor: Theme.of(context).appBarTheme.backgroundColor,
       actions: <Widget>[
         IconButton(
-            onPressed: () {
-              paginatorGlobalKey.currentState?.changeState(
-                  listType: ListType.GRID_VIEW,
-                  gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                      crossAxisCount: 6));
+            onPressed: (){
+              _changeGrid();
             },
             icon: Icon(Icons.grid_view)),
         IconButton(onPressed: () {}, icon: Icon(Icons.sort)),
