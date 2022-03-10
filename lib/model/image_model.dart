@@ -6,19 +6,24 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
 class Images with ChangeNotifier {
- String? image;
+  String? image;
+  User? user = FirebaseAuth.instance.currentUser;
   bool isFavourite;
-  Images({this.image,this.isFavourite = false});
 
-  // User? user => FirebaseAuth.instance.currentUser;
+  Images({this.image, this.isFavourite = false});
 
+  //Set image as favourite
   void toggleFavoriteStatus() {
     isFavourite = !isFavourite;
     notifyListeners();
   }
 
- // getFirebaseImages(){
- //   FirebaseFirestore.instance.collection('users').doc(user!.uid).collection('images').snapshots();
- // }
+  //Retrieving images from firebase
+  Stream<QuerySnapshot<Map<String, dynamic>>> getFirebaseImages() {
+    return FirebaseFirestore.instance
+        .collection('users')
+        .doc(user!.uid)
+        .collection('images')
+        .snapshots();
+  }
 }
-

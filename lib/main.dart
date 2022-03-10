@@ -13,8 +13,6 @@ import 'package:gallery_app/screen/authentication/services/authScreen.dart';
 import 'package:gallery_app/screen/widget/imagePicker.dart';
 import 'package:image_picker/image_picker.dart';
 
-import 'model/image_provider.dart';
-
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
@@ -29,8 +27,6 @@ class GalleryApp extends StatelessWidget {
     return MultiProvider(
         providers: [
           ChangeNotifierProvider(create: (context) => Images()),
-
-          
         ],
         child: MaterialApp(
             debugShowCheckedModeBanner: false,
@@ -61,7 +57,7 @@ class GalleryApp extends StatelessWidget {
               ImageInput.routName: (context) => ImageInput(),
               HomePage.routeName: (context) => HomePage(),
               ListScreen.routName: (context) => ListScreen(),
-              ImageDetail.routName:(context) => ImageDetail()
+              ImageDetail.routName: (context) => ImageDetail()
             }));
   }
 }

@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-import '../../model/image_provider.dart';
-
 class ImagePopMenu extends StatefulWidget {
   const ImagePopMenu({Key? key}) : super(key: key);
 
@@ -13,7 +11,6 @@ class ImagePopMenu extends StatefulWidget {
 class _ImagePopMenuState extends State<ImagePopMenu> {
   @override
   Widget build(BuildContext context) {
-
     return PopupMenuButton(
         color: Color(0xFF29292B),
         enabled: true,
