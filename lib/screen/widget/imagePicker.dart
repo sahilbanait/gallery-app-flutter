@@ -1,5 +1,6 @@
 import 'dart:io';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -16,6 +17,8 @@ class ImageInput extends StatefulWidget with ChangeNotifier {
 
 class _ImagePickerState extends State<ImageInput> {
   FirebaseStorage storage = FirebaseStorage.instance;
+  User? user = FirebaseAuth.instance.currentUser;
+  String? downloadURL;
 
   // Select and image from the gallery or take a picture with the camera
   // Then upload to Firebase Storage
@@ -39,21 +42,23 @@ class _ImagePickerState extends State<ImageInput> {
       try {
         // Uploading the selected image with some custom meta data
         // final ref = storage.ref('GalleryApp/Images/').child(fileName);
-        final now = DateTime.now();
+        final postID = DateTime.now().millisecondsSinceEpoch.toString();
+        FirebaseFirestore firebaseFirestore = FirebaseFirestore.instance;
+        Reference ref = FirebaseStorage.instance
+            .ref()
+            .child('${user?.uid}')
+            .child('post_$postID');
+        await ref.putFile(imageFile);
+        downloadURL = await ref.getDownloadURL();
+        await firebaseFirestore.collection('users').doc(user?.uid).collection('images').add({'downloadURL': downloadURL});
 
-
-        await storage.ref(fileName).putFile(
-            imageFile,
-            SettableMetadata(
-                customMetadata:
-                {'uploaded_by': '',
-                  'uploaded_date': '${now.toLocal()}'})
-        );
       } on FirebaseException catch (error) {
         if (kDebugMode) {
           print(error);
         }
       }
+
+
     } catch (err) {
       if (kDebugMode) {
         print(err);
@@ -77,7 +82,7 @@ class _ImagePickerState extends State<ImageInput> {
         title: new Text('Gallery'),
         onTap: () {
           upload('gallery');
-            Navigator.pop(context);
+          Navigator.pop(context);
         },
       ),
     ]);
