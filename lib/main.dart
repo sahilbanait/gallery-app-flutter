@@ -29,6 +29,8 @@ class GalleryApp extends StatelessWidget {
     return MultiProvider(
         providers: [
           ChangeNotifierProvider(create: (context) => ImageList()),
+
+          
         ],
         child: MaterialApp(
             debugShowCheckedModeBanner: false,

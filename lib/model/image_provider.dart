@@ -1,24 +1,21 @@
-import 'dart:ffi';
-import 'dart:io';
-
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'image_model.dart';
 
 class ImageList with ChangeNotifier {
   FirebaseStorage storage = FirebaseStorage.instance;
+  User? user = FirebaseAuth.instance.currentUser;
   List<Images> _images =  [];
   List<Images> get images => [..._images];
-
-  ImageList() {
-    loadImages();
-    notifyListeners();
-  }
 
   Images findById(String image) {
     return _images.firstWhere((img) => img.image == image);
   }
-
+  getFirebaseImages(){
+    FirebaseFirestore.instance.collection('users').doc(user!.uid).collection('images').snapshots();
+  }
   Future<List<Map<String, dynamic>>> loadImages() async {
     List<Map<String, dynamic>> files = [];
     final ListResult result = await storage.ref().list();
