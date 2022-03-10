@@ -6,6 +6,7 @@ import 'package:gallery_app/screen/widget/imageDetailScreen.dart';
 import 'package:gallery_app/screen/widget/imagePopMenu.dart';
 import 'dart:core';
 import 'package:provider/provider.dart';
+import '../../model/image_model.dart';
 import '../../model/image_provider.dart';
 
 class ListScreen extends StatefulWidget {
@@ -21,17 +22,9 @@ class _ListScreenState extends State<ListScreen> {
 
   @override
   Widget build(BuildContext context) {
-    bool isFavourite = false;
-    void toggleFavoriteStatus() {
-      isFavourite = !isFavourite;
-    }
-
-    setState(() {
-      toggleFavoriteStatus();
-    });
 
     FirebaseStorage storage = FirebaseStorage.instance;
-    final imageData = Provider.of<ImageList>(context, listen: true);
+    final imageData = Provider.of<Images>(context, listen: true);
     return Scaffold(
         body: Column(
       children: <Widget>[
@@ -72,8 +65,7 @@ class _ListScreenState extends State<ListScreen> {
                         // );
                         return CircularProgressIndicator();
                       } else {
-                        return Consumer<ImageList>(
-                            builder: (context, images, child) =>
+                        return
                                 GridView.builder(
                                   itemCount: snapshot.data!.docs.length,
                                   primary: false,
@@ -87,13 +79,14 @@ class _ListScreenState extends State<ListScreen> {
                                     String url = snapshot.data!.docs[index]
                                         ['downloadURL'];
                                     // final images = Provider.of<Images>(context);
-                                    return GridTile(
-                                        child: GestureDetector(
+                                    return GestureDetector(
                                           onTap: () {
                                             Navigator.of(context).pushNamed(
                                                 ImageDetail.routName,
                                                 arguments: url);
                                           },
+                                          child: Consumer<Images>(
+                                          builder: (context, images, child) => GridTile(
                                           child: Image.network(
                                             url,
                                             fit: BoxFit.fitWidth,
@@ -116,7 +109,7 @@ class _ListScreenState extends State<ListScreen> {
                                               );
                                             },
                                           ),
-                                        ),
+
                                         footer: Card(
                                             color: Colors.transparent,
                                             elevation: 0,
@@ -126,11 +119,13 @@ class _ListScreenState extends State<ListScreen> {
                                               children: <Widget>[
                                                 GridTileBar(
                                                   trailing: IconButton(
-                                                    icon: Icon(isFavourite
+                                                    icon: Icon(imageData.isFavourite
                                                         ? Icons.favorite
-                                                        : Icons.favorite),
+                                                        : Icons.favorite_border),
                                                     onPressed:
-                                                        toggleFavoriteStatus,
+                                                    (){
+                                                      imageData.toggleFavoriteStatus();
+                                                    }
                                                   ),
                                                 ),
                                               ],
@@ -143,9 +138,9 @@ class _ListScreenState extends State<ListScreen> {
                                               child: ImagePopMenu(),
                                             ),
                                           ],
-                                        )));
+                                        )))));
                                   },
-                                ));
+                                );
                       }
                     })))
       ],

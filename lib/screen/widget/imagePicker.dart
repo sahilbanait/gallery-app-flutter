@@ -50,7 +50,8 @@ class _ImagePickerState extends State<ImageInput> {
             .child('post_$postID');
         await ref.putFile(imageFile);
         downloadURL = await ref.getDownloadURL();
-        await firebaseFirestore.collection('users').doc(user?.uid).collection('images').add({'downloadURL': downloadURL});
+        await firebaseFirestore.collection('users').doc(user?.uid).collection('images').add({'downloadURL': downloadURL}).whenComplete(
+                () => showSnackBar("Image Uploaded", Duration(seconds: 2)));
 
       } on FirebaseException catch (error) {
         if (kDebugMode) {
@@ -86,5 +87,10 @@ class _ImagePickerState extends State<ImageInput> {
         },
       ),
     ]);
+  }
+
+  showSnackBar(String snackBarText, Duration duration) {
+    final snackBar = SnackBar(content: Text(snackBarText), duration: duration, backgroundColor: Theme.of(context).primaryColor,);
+    ScaffoldMessenger.of(context).showSnackBar(snackBar);
   }
 }

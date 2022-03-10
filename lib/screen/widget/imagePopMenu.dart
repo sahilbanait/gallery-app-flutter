@@ -13,7 +13,7 @@ class ImagePopMenu extends StatefulWidget {
 class _ImagePopMenuState extends State<ImagePopMenu> {
   @override
   Widget build(BuildContext context) {
-    final imageData = Provider.of<ImageList>(context, listen: true);
+
     return PopupMenuButton(
         color: Color(0xFF29292B),
         enabled: true,

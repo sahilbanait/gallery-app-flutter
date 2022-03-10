@@ -14,7 +14,6 @@ class _ImageDetailState extends State<ImageDetail> {
   @override
   Widget build(BuildContext context) {
     final image = ModalRoute.of(context)?.settings.arguments;
-    final imageData = Provider.of<ImageList>(context);
     return Scaffold(
       appBar: AppBar(
         title: Text('Image Detail'),
