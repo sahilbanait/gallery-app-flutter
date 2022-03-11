@@ -45,15 +45,17 @@ class _AuthScreenState extends State<AuthScreen> {
 
       if (e.message != null) {
         message = e.message.toString().trim();
-        showSnackBar(message, Duration(seconds: 3));
+        showSnackBar(message, Duration(seconds: 5));
+
       }
       setState(() {
         _isLoading = false;
       });
     } catch (e) {
       var msg = e.toString();
-      showSnackBar(msg, Duration(seconds: 3));
+      showSnackBar(msg, Duration(seconds: 5));
       print(e);
+
     }
   }
 

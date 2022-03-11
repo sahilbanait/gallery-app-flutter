@@ -1,3 +1,5 @@
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -9,8 +11,11 @@ class ImagePopMenu extends StatefulWidget {
 }
 
 class _ImagePopMenuState extends State<ImagePopMenu> {
+  User? user = FirebaseAuth.instance.currentUser;
+  final postID = DateTime.now().millisecondsSinceEpoch.toString();
   @override
   Widget build(BuildContext context) {
+
     return PopupMenuButton(
         color: Color(0xFF29292B),
         enabled: true,
