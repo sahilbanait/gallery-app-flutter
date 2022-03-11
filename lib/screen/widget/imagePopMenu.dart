@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 class ImagePopMenu extends StatefulWidget {
-  const ImagePopMenu({Key? key}) : super(key: key);
+  ImagePopMenu({Key? key}) : super(key: key);
 
   @override
   State<ImagePopMenu> createState() => _ImagePopMenuState();
@@ -15,7 +15,9 @@ class _ImagePopMenuState extends State<ImagePopMenu> {
         color: Color(0xFF29292B),
         enabled: true,
         onSelected: (value) {
-          if (value == 3) {}
+          if (value == 3) {
+            setState(() {});
+          }
         },
         itemBuilder: (context) => [
               PopupMenuItem(

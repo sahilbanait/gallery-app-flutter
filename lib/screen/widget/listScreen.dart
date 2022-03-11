@@ -2,6 +2,8 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_paginator/enums.dart';
+import 'package:flutter_paginator/flutter_paginator.dart';
 import 'package:gallery_app/screen/widget/imageDetailScreen.dart';
 import 'package:gallery_app/screen/widget/imagePopMenu.dart';
 import 'dart:core';
@@ -10,12 +12,24 @@ import '../../model/image_model.dart';
 
 class ListScreen extends StatefulWidget {
   static const routName = '/list-screen';
+  int count = 3;
 
   @override
   _ListScreenState createState() => _ListScreenState();
 }
 
 class _ListScreenState extends State<ListScreen> {
+  final GlobalKey<PaginatorState> paginatorGlobalKey = GlobalKey();
+
+  void changeGrid() {
+    setState(() {
+      paginatorGlobalKey.currentState?.changeState(
+          listType: ListType.GRID_VIEW,
+          gridDelegate:
+              SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 6));
+    });
+  }
+
   User? user = FirebaseAuth.instance.currentUser;
   final auth = FirebaseAuth.instance.currentUser;
   int? index;
@@ -56,6 +70,7 @@ class _ListScreenState extends State<ListScreen> {
                         return CircularProgressIndicator();
                       } else {
                         return GridView.builder(
+                          key: paginatorGlobalKey,
                           itemCount: snapshot.data!.docs.length,
                           primary: false,
                           padding: EdgeInsets.all(16),
@@ -115,12 +130,8 @@ class _ListScreenState extends State<ListScreen> {
                                                             .primaryColor,
                                                       ),
                                                       onPressed: () {
-                                                        if (index ==
-                                                            snapshot.data?.docs
-                                                                .elementAt(
-                                                                    index))
-                                                          imageData
-                                                              .toggleFavoriteStatus();
+                                                        imageData
+                                                            .toggleFavoriteStatus();
                                                       }),
                                                 )
                                               ],
