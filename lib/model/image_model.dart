@@ -17,7 +17,6 @@ class Images with ChangeNotifier {
     isFavourite = !isFavourite;
     notifyListeners();
   }
-
   //Retrieving images from firebase
   Stream<QuerySnapshot<Map<String, dynamic>>> getFirebaseImages() {
     return FirebaseFirestore.instance

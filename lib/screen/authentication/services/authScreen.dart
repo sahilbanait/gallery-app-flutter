@@ -2,7 +2,7 @@ import 'package:flutter/services.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:fluttertoast/fluttertoast.dart';
+
 import 'package:gallery_app/screen/authentication/services/authForm.dart';
 
 class AuthScreen extends StatefulWidget {
@@ -11,7 +11,8 @@ class AuthScreen extends StatefulWidget {
 }
 
 class _AuthScreenState extends State<AuthScreen> {
-  final GlobalKey<ScaffoldMessengerState> scaffoldMessengerKey = GlobalKey<ScaffoldMessengerState>();
+  final GlobalKey<ScaffoldMessengerState> scaffoldMessengerKey =
+      GlobalKey<ScaffoldMessengerState>();
 
   final _auth = FirebaseAuth.instance;
   var _isLoading = false;
@@ -24,11 +25,15 @@ class _AuthScreenState extends State<AuthScreen> {
         _isLoading = true;
       });
       if (isLogin) {
-        result = await _auth.signInWithEmailAndPassword(
-            email: email, password: password);
+        result = await _auth
+            .signInWithEmailAndPassword(email: email, password: password)
+            .whenComplete(
+                () => showSnackBar("Login Successful", Duration(seconds: 3)));
       } else {
-        result = await _auth.createUserWithEmailAndPassword(
-            email: email, password: password);
+        result = await _auth
+            .createUserWithEmailAndPassword(email: email, password: password)
+            .whenComplete(() =>
+                showSnackBar("Registration successful", Duration(seconds: 3)));
       }
       await FirebaseFirestore.instance
           .collection('users')
@@ -40,21 +45,20 @@ class _AuthScreenState extends State<AuthScreen> {
 
       if (e.message != null) {
         message = e.message.toString().trim();
-        Fluttertoast.showToast(msg: message);
-
+        showSnackBar(message, Duration(seconds: 3));
       }
       setState(() {
         _isLoading = false;
       });
     } catch (e) {
+      var msg = e.toString();
+      showSnackBar(msg, Duration(seconds: 3));
       print(e);
     }
-
   }
 
   @override
   Widget build(BuildContext context) {
-    scaffoldMessengerKey.currentState?.showSnackBar(SnackBar(content: Text('Login Successful')));
     return Scaffold(
       backgroundColor: Colors.deepPurple[200],
       appBar: AppBar(
@@ -66,5 +70,13 @@ class _AuthScreenState extends State<AuthScreen> {
         _isLoading,
       ),
     );
+  }
+
+  void showSnackBar(String snackBarText, Duration duration) {
+    ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+      content: Text(snackBarText),
+      duration: duration,
+      backgroundColor: Theme.of(context).primaryColor,
+    ));
   }
 }

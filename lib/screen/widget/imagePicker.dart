@@ -40,8 +40,6 @@ class _ImagePickerState extends State<ImageInput> {
       final savedImage = await imageFile.copy('${appDir.path}/$filename');
 
       try {
-        // Uploading the selected image with some custom meta data
-        // final ref = storage.ref('GalleryApp/Images/').child(fileName);
         final postID = DateTime.now().millisecondsSinceEpoch.toString();
         FirebaseFirestore firebaseFirestore = FirebaseFirestore.instance;
         Reference ref = FirebaseStorage.instance
@@ -50,16 +48,19 @@ class _ImagePickerState extends State<ImageInput> {
             .child('post_$postID');
         await ref.putFile(imageFile);
         downloadURL = await ref.getDownloadURL();
-        await firebaseFirestore.collection('users').doc(user?.uid).collection('images').add({'downloadURL': downloadURL}).whenComplete(
+        await firebaseFirestore
+            .collection('users')
+            .doc(user?.uid)
+            .collection('images')
+            .add({'downloadURL': downloadURL}).whenComplete(
                 () => showSnackBar("Image Uploaded", Duration(seconds: 2)));
-
       } on FirebaseException catch (error) {
         if (kDebugMode) {
+          var msg = error.message.toString();
+          showSnackBar(msg, Duration(seconds: 3));
           print(error);
         }
       }
-
-
     } catch (err) {
       if (kDebugMode) {
         print(err);
@@ -75,6 +76,7 @@ class _ImagePickerState extends State<ImageInput> {
         title: new Text('Camera'),
         onTap: () {
           upload('camera');
+          showSnackBar("Image uploaded successful", Duration(seconds: 5));
           Navigator.pop(context);
         },
       ),
@@ -84,13 +86,17 @@ class _ImagePickerState extends State<ImageInput> {
         onTap: () {
           upload('gallery');
           Navigator.pop(context);
+          showSnackBar("Image uploaded successful", Duration(seconds: 5));
         },
       ),
     ]);
   }
 
   showSnackBar(String snackBarText, Duration duration) {
-    final snackBar = SnackBar(content: Text(snackBarText), duration: duration, backgroundColor: Theme.of(context).primaryColor,);
-    ScaffoldMessenger.of(context).showSnackBar(snackBar);
+    ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+      content: Text(snackBarText),
+      duration: duration,
+      backgroundColor: Theme.of(context).primaryColor,
+    ));
   }
 }
